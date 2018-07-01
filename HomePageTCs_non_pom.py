@@ -26,12 +26,21 @@ class TestPyOrgHomePage(unittest.TestCase): # naming convention: Test at the beg
         py3docbutton.click()
         self.assertIsNotNone(re.compile('3\..?\..? Documentation').match(self.driver.title))
 
-    def test_TC002(self):
+    def test_TC002_pass_mismatch_message(self):
         css_selector = "#content > div > section > div.psf-widget > p.click-these > a:nth-child(1)"
         WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, css_selector))).click()
+        # redirection to: https://www.python.org/accounts/login/
         css_selector = "#content > div > aside > div > p:nth-child(3) > a"
         WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, css_selector))).click()
-        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, "id_username")))
+        # redirection to: https://www.python.org/accounts/signup/
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, "id_username"))).send_keys("johndoe")
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, "id_email"))).send_keys("johndoe@email.com")
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, "id_password1"))).send_keys("pass123")
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, "id_password2"))).send_keys("pass123456")
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#signup_form > button"))).click()
+        user_message = "You must type the same password each time."
+        usr_msg_element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#signup_form > ul > li ")))
+        self.assertTrue(usr_msg_element.text == user_message)
 
     def tearDown(self):
         self.driver.close()
