@@ -16,6 +16,9 @@ class TestPyOrgHomePage(unittest.TestCase):
         chrome_options.add_argument('headless')
         chrome_options.add_argument('window-size=1920x1080')
         self.driver = webdriver.Chrome(options=chrome_options)
+        # self.driver = webdriver.Remote(
+        #     command_executor='http://127.0.0.1:4444/wd/hub',
+        #     desired_capabilities={'browserName': 'chrome'})
         self.homepage = HomePage(self.driver)
 
     def test_TC001_py3_doc_butt_after_doc_hover(self):

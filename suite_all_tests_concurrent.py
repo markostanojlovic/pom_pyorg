@@ -13,5 +13,5 @@ def suite():
 if __name__ == '__main__':
     runner = unittest.TextTestRunner(verbosity=2)
     suite = suite()
-    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(2))
+    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(3))
     runner.run(concurrent_suite)
