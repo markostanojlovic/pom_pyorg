@@ -1,6 +1,7 @@
 import unittest
 from HomePageTCs import TestPyOrgHomePage
 from AboutPageTCs import TestPyOrgAboutPage
+from concurrencytest import ConcurrentTestSuite, fork_for_tests
 
 def suite():
     suite = unittest.TestSuite()
@@ -12,4 +13,5 @@ def suite():
 if __name__ == '__main__':
     runner = unittest.TextTestRunner(verbosity=2)
     suite = suite()
-    runner.run (suite)
+    concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests(2))
+    runner.run(concurrent_suite)
